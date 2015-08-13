@@ -144,7 +144,7 @@ int main(int argc, char * argv[]) {
         Eigen::Map<Eigen::Matrix<double, 4, 4, Eigen::RowMajor>>
             eigen_main_to_origin((double*)main_to_origin.data());
         Eigen::Matrix<double, 4, 4, Eigen::RowMajor> sto =
-            eigen_sensor_to_main * eigen_main_to_origin;
+            eigen_main_to_origin * eigen_sensor_to_main;
         // std::cout << sto << std::endl;
         output.sensor_orientation_ =
             Eigen::Quaternionf( sto.topLeftCorner<3,3>().cast<float>() );
