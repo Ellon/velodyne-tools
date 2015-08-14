@@ -16,16 +16,12 @@ typedef struct VELODYNE_CARTESIAN_POINT {
     unsigned char intensity;
 } VELODYNE_CARTESIAN_POINT;
 
-int dump(char * filepath) {
-    FILE* file;
+int dump(FILE* file) {
     char aux[VELODYNE_HEADER_LINE]; /* Auxiliary variable for fscanf. */
     int height, width, maxScanWidth, result, good = 0;
     size_t size;
     VELODYNE_CARTESIAN_POINT point;
 
-    file = fopen(filepath, "r");
-    if (file == NULL)
-      return -1;
     result = fscanf(file, "%s", aux);
     /* Reads the header. */
     result = fscanf(file, "%d %d %d\n", &height, &width, &maxScanWidth);
@@ -44,5 +40,10 @@ int dump(char * filepath) {
 }
 
 int main(int argc, char * argv[]) {
-    return dump(argv[1]);
+    FILE* file = stdin;
+    if (argc > 1)
+        file = fopen(argv[1], "r");
+    if (file == NULL)
+      return -1;
+    return dump(file);
 }
