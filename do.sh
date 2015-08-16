@@ -9,4 +9,6 @@ for f in $p/velodyneShot.[0-9]*; do
     i=${f##*.} # get the %04i indice
     ~/velodyne-tools/convert_ascii $f > cloud.$(printf %05i $((10#$i))).txt
 done
-python ~/velodyne-tools/ascii_bag.py 0 9999 "/mana/velodyne" all.bag
+
+ln -s $p/velodyneShot.pos.* .
+python ~/velodyne-tools/velodyne_bag.py 0 9999 minnie
