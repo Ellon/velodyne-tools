@@ -55,11 +55,12 @@ def tfm(matrix, parent, child, stamp):
     t.transform.rotation.w = rotation[3]
     return tfMessage([t])
 
-f0 = '/%s/map'%name
+f0 = '/map'
 f1 = '/%s/base'%name
 f2 = '/%s/velodyne'%name
 path1 = 'cloud.%05i.txt'
 path2 = 'velodyneShot.pos.%04i'
+base = time.time()
 
 with rosbag.Bag('%s.bag'%name, 'w') as bag:
     for seq in range(begin, end+1):
@@ -67,7 +68,7 @@ with rosbag.Bag('%s.bag'%name, 'w') as bag:
             lines = f.readlines()
 
         points  = [map(float, line.split()) for line in lines]
-        stamp   = rospy.Time.from_sec(time.time() + seq) # FIXME
+        stamp   = rospy.Time.from_sec(base + 0.1 * seq) # FIXME
         header  = Header(seq=seq, stamp=stamp, frame_id=f2)
         pc2     = point_cloud2.create_cloud(header, fields, points)
         bag.write(f2, pc2, stamp)
