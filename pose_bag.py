@@ -10,10 +10,11 @@ from math import sin, cos
 
 import rospy
 import rosbag
-import geometry_msgs.msg
-import tf
-import tf.msg
+
+from tf.msg import tfMessage
 from tf.transformations import quaternion_from_matrix, translation_from_matrix
+from geometry_msgs.msg import TransformStamped
+
 
 begin   = int(sys.argv[1])
 end     = int(sys.argv[2])
@@ -33,7 +34,7 @@ def matrix(yaw, pitch, roll, x, y, z):
 def tfm(matrix, parent, child, stamp):
     rotation = quaternion_from_matrix(matrix)
     translation = translation_from_matrix(matrix)
-    t = geometry_msgs.msg.TransformStamped()
+    t = TransformStamped()
     t.header.frame_id = parent
     t.header.stamp = stamp
     t.child_frame_id = child
@@ -44,7 +45,7 @@ def tfm(matrix, parent, child, stamp):
     t.transform.rotation.y = rotation[1]
     t.transform.rotation.z = rotation[2]
     t.transform.rotation.w = rotation[3]
-    return tf.msg.tfMessage([t])
+    return tfMessage([t])
 
 f0 = '/%s/map'%name
 f1 = '/%s/base'%name
